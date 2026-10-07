@@ -9,9 +9,9 @@ open System
 
 /// A Triple Pipeline profile record — the C# binding's
 /// <c>Everanium.Itb3.Profile</c>: a plain data holder plus a JSON codec over the
-/// wire keys. nonce_bits and barrier_fill are inspection-only —
-/// <c>Pipeline.inspect</c> populates them from the blob's runtime
-/// globals and <c>Pipeline.lookup</c> leaves both null. No semantic
+/// wire keys. nonce_bits, barrier_fill and container_mode are inspection-only —
+/// <c>Pipeline.inspect</c> populates them from the blob's inner
+/// snapshot and <c>Pipeline.lookup</c> leaves them null. No semantic
 /// validation happens on the .NET side — every field rule is enforced
 /// by Go at <c>Pipeline.register</c> / <c>Pipeline.load</c> time and
 /// surfaces as <c>ItbError</c>.
@@ -88,6 +88,12 @@ module Pipeline =
     /// The sorted names of every registered profile.
     let profiles () : Result<string list, ItbError> =
         ItbError.attempt (fun () -> Everanium.Itb3.Pipeline.Profiles() |> List.ofArray)
+
+    /// The names of every primitive in the shipped hash registry, in
+    /// canonical order. Primitives registered at runtime on the Go
+    /// side are not part of this enumeration.
+    let hashNames () : Result<string list, ItbError> =
+        ItbError.attempt (fun () -> Everanium.Itb3.Pipeline.HashNames() |> List.ofArray)
 
     /// The current self-describing session blob: the bytes
     /// <c>init</c> produced, the bytes <c>load</c> re-marshalled, or

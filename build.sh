@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 #
-# build.sh -- one-step build for the F# binding: libitb3.so + dotnet
-# build. The binding is a thin proxy over the C# binding (CLR
-# bytecode interop, no FFI hop of its own); the C# Itb library
-# project is a solution member, so one dotnet build covers both
-# layers. Prerequisites (Go, dotnet-sdk) must be installed
-# separately; see README.md "Prerequisites" section.
+# One-step build for the F# binding: libitb3.so + dotnet build. The
+# binding is a thin proxy over the C# binding (CLR bytecode interop, no
+# FFI hop of its own); the C# Everanium.LibItb3 library project is a
+# solution member, so one dotnet build covers both layers.
+# Prerequisites (Go, dotnet-sdk) must be installed separately; see
+# README.md "Prerequisites" section.
 #
 # The build starts from an empty tree: the bin/ and obj/ directories of
 # every project in the solution, plus any test result output, are
@@ -129,6 +129,7 @@ else
         bench/Everanium.LibItb3.FSharp.Bench/obj \
         eitb/Everanium.LibItb3.FSharp.Eitb/bin \
         eitb/Everanium.LibItb3.FSharp.Eitb/obj \
+        loop/bin                               loop/obj \
         TestResults
 
     echo "==> cleaning the C# library solution member"
@@ -151,5 +152,6 @@ require_built "$CSHARP_LIB_DIR/bin/Release/net*/Everanium.LibItb3.dll"
 require_built "$BINDING_DIR/src/Everanium.LibItb3.FSharp/bin/Release/net*/Everanium.LibItb3.FSharp.dll"
 require_built "$BINDING_DIR/eitb/Everanium.LibItb3.FSharp.Eitb/bin/Release/net*/Everanium.LibItb3.FSharp.Eitb.dll"
 require_built "$BINDING_DIR/bench/Everanium.LibItb3.FSharp.Bench/bin/Release/net*/Everanium.LibItb3.FSharp.Bench.dll"
+require_built "$BINDING_DIR/loop/bin/Release/net*/Everanium.LibItb3.FSharp.Loop.dll"
 
 echo "==> ready: ./run_tests.sh"
